@@ -1,6 +1,10 @@
 PYTHON ?= python3
 VENV ?= .venv
-ACTIVATE = source $(VENV)/bin/activate
+ifeq ($(OS),Windows_NT)
+    ACTIVATE = .venv/Scripts/activate
+else
+    ACTIVATE = source .venv/bin/activate
+endif
 DATA_DIR ?= data/raw
 PROCESSED_DIR ?= data/processed
 

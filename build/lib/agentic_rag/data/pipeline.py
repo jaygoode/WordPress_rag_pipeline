@@ -5,8 +5,6 @@ from pathlib import Path
 from typing import Iterable
 
 from .types import Chunk, RawRecord
-from pathlib import Path
-from agentic_rag.data.types import Chunk
 
 
 class BaseIngestionPipeline(abc.ABC):
@@ -28,4 +26,3 @@ class BaseIngestionPipeline(abc.ABC):
         records = self.load_raw(raw_dir)
         chunks = self.transform(records)
         self.persist(chunks, output_dir)
-

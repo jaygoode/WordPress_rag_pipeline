@@ -1,3 +1,36 @@
+Metadata-Version: 2.4
+Name: flowpilot-challenge
+Version: 0.1.0
+Summary: Challenge scaffold
+Author: Zoner
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: typer[all]>=0.12
+Requires-Dist: pydantic>=2.7
+Requires-Dist: pydantic-settings>=2.2
+Requires-Dist: python-dotenv>=1.0
+Requires-Dist: rich>=13.7
+Requires-Dist: structlog>=24.1
+Requires-Dist: orjson>=3.10
+Requires-Dist: datasets>=2.18
+Requires-Dist: transformers>=4.40
+Requires-Dist: sentence-transformers>=2.6
+Requires-Dist: accelerate>=0.28
+Requires-Dist: faiss-cpu>=1.7.4
+Requires-Dist: langchain>=0.2
+Requires-Dist: langchain-community>=0.2
+Requires-Dist: langchainhub>=0.1
+Requires-Dist: chromadb>=0.5
+Requires-Dist: fastapi>=0.111
+Requires-Dist: uvicorn[standard]>=0.29
+Provides-Extra: dev
+Requires-Dist: pytest>=8.2; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.23; extra == "dev"
+Requires-Dist: pytest-cov>=5.0; extra == "dev"
+Requires-Dist: mypy>=1.10; extra == "dev"
+Requires-Dist: ruff>=0.4; extra == "dev"
+Requires-Dist: types-requests; extra == "dev"
+
 # RAG Retrieval Pipeline Challenge
 
 You'll receive a messy WordPress QA dataset ( https://huggingface.co/datasets/mteb/cqadupstack-wordpress ) and transform it into a functional retrieval system. We provide the scaffolding (CLI commands, settings, optional Docker infrastructure). The implementation is entirely yours.

@@ -1,10 +1,7 @@
 from __future__ import annotations
-
 from pathlib import Path
 from typing import Optional, Type
-
 import typer
-
 from .agent import BaseAgentController
 from .data import BaseIngestionPipeline
 from .evaluation import BaseEvaluator
@@ -12,7 +9,7 @@ from .logging_utils import configure_logging
 from .settings import get_settings
 from .utils import resolve_dotted_path
 
-app = typer.Typer(help="Agentic RAG challenge CLI") 
+app = typer.Typer(help="Agentic RAG challenge CLI")
 
 
 def _instantiate(path: Optional[str], expected: Type) -> object:
