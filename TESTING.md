@@ -1,3 +1,5 @@
+Developer notes for development and planning of testing, not exhaustive.
+
 PLANNED TESTS:
     storage:
         db connection
