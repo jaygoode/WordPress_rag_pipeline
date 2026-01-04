@@ -97,6 +97,7 @@ MTEB (Massive Text Embedding Benchmark)
 
 study topics
     What are TREC, MTEB, BEIR, MS MARCO?
+    -Appsettings, basesettings basemodel, schema.py pydantic_settings
 
 IMPROVEMENTS
     -test environment auto overwrites db 

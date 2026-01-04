@@ -1,5 +1,7 @@
 from typing import List
-from agentic_rag import config
+from ..settings import get_settings
+
+settings = get_settings()
 
 def chunk_text(text: str) -> List[str]:
     """
@@ -18,8 +20,8 @@ def chunk_text(text: str) -> List[str]:
     chunks = []
     start = 0
     while start < len(words):
-        end = min(start + config.CHUNK_MAX_TOKENS, len(words))
+        end = min(start + settings.chunking.max_tokens, len(words))
         chunk = " ".join(words[start:end])
         chunks.append(chunk)
-        start += config.CHUNK_MAX_TOKENS - config.CHUNK_OVERLAP
+        start += settings.chunking.max_tokens - settings.chunking.overlap
     return chunks

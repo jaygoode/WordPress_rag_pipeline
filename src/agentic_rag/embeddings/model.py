@@ -1,7 +1,6 @@
 from typing import List
 import torch
 from sentence_transformers import SentenceTransformer
-from agentic_rag import config
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 

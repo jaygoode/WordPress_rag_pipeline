@@ -10,7 +10,9 @@ from agentic_rag.embeddings.model import embed_batch
 from agentic_rag.storage.db import get_connection, ensure_schema
 from .cleaning import clean_text
 from .chunk_text import chunk_text
-from agentic_rag import config
+from ..settings import get_settings
+
+settings = get_settings()
 
 class WordPressIngestionPipeline(BaseIngestionPipeline):
     """Ingestion pipeline for WordPress export XML files."""
@@ -104,7 +106,7 @@ class WordPressIngestionPipeline(BaseIngestionPipeline):
         #TODO is raw record a list or dict? do i need to clean all values? checkthis
         for chunk in self.transform(records):
             batch.append(chunk)
-            if len(batch) >= config.BATCH_SIZE:
+            if len(batch) >= settings.chunking.batch_size:
                 self.persist(batch, output_dir)
                 batch.clear()
 

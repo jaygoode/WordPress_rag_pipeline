@@ -15,7 +15,6 @@ from .evaluation import BaseEvaluator
 from .logging_utils import configure_logging
 from .settings import get_settings
 from .utils import resolve_dotted_path
-from agentic_rag import config
 
 
 app = typer.Typer(help="Agentic RAG challenge CLI") 
@@ -64,8 +63,8 @@ def evaluate() -> None:
     #TODO check this metric func
     metrics = MetricSuite(
     metrics=[
-        RecallAtK(k=config.RECALL_K_TOP_K_1),
-        RecallAtK(k=config.RECALL_K_TOP_K_2),
+        (RecallAtK(k) for k in settings.evaluation.recall_at_k),
+        RecallAtK(k=settings.evaluation.recall_at_k+10),
         MRR(),
     ])
     
