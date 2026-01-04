@@ -96,11 +96,15 @@ MTEB (Massive Text Embedding Benchmark)
     A benchmark specifically for embeddings
 
 study topics
-    What are TREC, MTEB, BEIR, MS MARCO?
+    -TREC, MTEB, BEIR, MS MARCO
     -Appsettings, basesettings basemodel, schema.py pydantic_settings
+    -extra keyword for logging, json output
+    -NDCG (Normalized Discounted Cumulative Gain)
+
 
 IMPROVEMENTS
     -test environment auto overwrites db 
+    -dynamic embedding dimension
     -prompt to llm splits to multiple prompts for improved accuracy
     -Fine-tune embeddings for dataset
     -Normalize embeddings
@@ -119,8 +123,40 @@ metrics
 
 
 TOMORROW:
-    -add logging
+    -add logging OK
+    -TESTS
     -write README
-    -write improvements
+    -write improvements 
     -hook up the reranker
     -create the agent if time
+
+
+TESTS:
+storage:
+    db connection
+    db storage?
+cli tests?
+
+data/ingestion
+    -chunk text
+    -cleaning OK
+    -rag_pipeline
+    
+embeddings - model
+    embedding test?
+
+eval
+    -metrics 
+        -recall@k 
+        -mmr 
+        -evaluate func
+    -runner
+        -QreelsEvaluator
+            -load queries
+            -load qrels
+            -iter queries
+            -evaluate
+
+retrieval
+   rerank
+   retriever - search

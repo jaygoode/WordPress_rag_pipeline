@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS documents (
   chunk_id TEXT PRIMARY KEY,
   record_id TEXT NOT NULL,
   content TEXT NOT NULL,
-  embedding VECTOR(384),
+  embedding VECTOR(768),
   metadata JSONB,
   created_at TIMESTAMPTZ DEFAULT now()
 );

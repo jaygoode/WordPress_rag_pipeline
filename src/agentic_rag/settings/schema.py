@@ -6,7 +6,8 @@ import os
 
 from pydantic import BaseModel, Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
+import logging
+logger = logging.getLogger(__name__)
 
 class VectorStoreConfig(BaseModel):
     implementation: Optional[str] = Field(default="pgvector")
@@ -81,32 +82,12 @@ _settings: Optional[AppSettings] = None
 def get_settings() -> AppSettings:
     global _settings
     if _settings is None:
-        # Debug information
-        # env_path = Path(__file__).resolve().parents[2] / ".env"
-        # print(f"=== DEBUG INFO ===")
-        # print(f"schema.py location: {Path(__file__).resolve()}")
-        # print(f"Looking for .env at: {env_path}")
-        # print(f"File exists: {env_path.exists()}")
-        # print(f"Current working directory: {os.getcwd()}")
-        
-        # if env_path.exists():
-        #     print(f"\n=== First 10 lines of .env ===")
-        #     with open(env_path, 'r') as f:
-        #         for i, line in enumerate(f):
-        #             if i < 10:
-        #                 print(line.rstrip())
-        
-        # print(f"\n=== Environment variables with AGENTIC_RAG_ prefix ===")
-        # for key, value in os.environ.items():
-        #     if key.startswith("AGENTIC_RAG_"):
-        #         print(f"{key}={value}")
-        
         _settings = AppSettings()
         
-        print(f"\n=== Loaded Settings ===")
-        print(f"retriever_class: {_settings.retriever_class}")
-        print(f"vector_store.top_k: {_settings.vector_store.top_k}")
-        print(f"vector_store.embedding_model: {_settings.vector_store.embedding_model}")
-        print("==================\n")
+        logger.info(f"\n=== Loaded Settings ===")
+        logger.info(f"retriever_class: {_settings.retriever_class}")
+        logger.info(f"vector_store.top_k: {_settings.vector_store.top_k}")
+        logger.info(f"vector_store.embedding_model: {_settings.vector_store.embedding_model}")
+        logger.info("==================\n")
     
     return _settings

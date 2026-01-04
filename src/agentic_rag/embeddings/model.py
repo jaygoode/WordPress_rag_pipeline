@@ -2,13 +2,13 @@ from typing import List
 import torch
 from sentence_transformers import SentenceTransformer
 from ..settings import get_settings
-
+import logging
 settings = get_settings()
-
+logger = logging.getLogger(__name__)
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 if DEVICE != "cuda":
-    print("Warning: CUDA not available, using CPU for embeddings. This may be slow.")
+    logger.info("Warning: CUDA not available, using CPU for embeddings. This may be slow.")
 
 model = SentenceTransformer(settings.vector_store.embedding_model, device=DEVICE)
 

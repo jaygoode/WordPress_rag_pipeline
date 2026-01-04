@@ -8,6 +8,9 @@ from pathlib import Path
 from .metrics import MetricSuite
 from ..utils.io import read_jsonl
 from ..settings import get_settings
+import logging
+
+logger = logging.getLogger(__name__)
 settings = get_settings()
 
 class BaseEvaluator(abc.ABC):
@@ -65,8 +68,12 @@ class QrelsEvaluator(BaseEvaluator):
 
             for name, value in scores.items():
                 all_scores[name].append(value)
-
+                
+        logger.info("=== Evaluation Results ===")
+        logger.info(f"embedding model: {settings.vector_store.embedding_model}")
+        logger.info(f"chunking.overlap: {settings.chunking.overlap}")
+        logger.info(f"chunking.max_tokens: {settings.chunking.max_tokens}")
         for name, values in all_scores.items():
             mean = sum(values) / len(values) if values else 0.0
-            print(f"{name}: {mean:.4f}")
-            
+            logger.info(f"{name}: {mean:.4f}")
+            # print(f"{name}: {mean:.4f}")
