@@ -113,13 +113,8 @@ IMPROVEMENTS
     -Consider hybrid retrieval
         -Combine BM25 (keyword) + vector embeddings.
         -Sometimes exact keyword matches catch what embeddings miss, especially for technical Q&A like WordPress.
+    -tweaking chunking params - overlap, max tokens
 
-metrics
-    pretrained SentenceTransformer: all-MiniLM-L6-v2
-        -no reranker
-        recall@5: 0.3579
-        recall@10: 0.3579
-        mrr: 0.2779
 
 
 TOMORROW:
@@ -160,3 +155,15 @@ eval
 retrieval
    rerank
    retriever - search
+
+# Run all tests
+pytest tests/test_chunk_text.py -v
+
+# Run with coverage
+pytest tests/test_chunk_text.py --cov=agentic_rag.data.chunk_text --cov-report=html
+
+# Run specific test class
+pytest tests/test_chunk_text.py::TestChunkText -v
+
+# Run edge cases only
+pytest tests/test_chunk_text.py::TestChunkTextEdgeCases -v

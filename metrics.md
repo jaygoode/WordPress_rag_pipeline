@@ -14,3 +14,11 @@ recall@10: 0.4979
 recall@20: 0.5650
 mrr: 0.3152
 
+2026-01-04 18:39:20,415 | agentic_rag.evaluation.runner | INFO | === Evaluation Results ===
+2026-01-04 18:39:20,416 | agentic_rag.evaluation.runner | INFO | embedding model: all-mpnet-base-v2
+2026-01-04 18:39:20,416 | agentic_rag.evaluation.runner | INFO | chunking.overlap: 50
+2026-01-04 18:39:20,416 | agentic_rag.evaluation.runner | INFO | chunking.max_tokens: 400
+2026-01-04 18:39:20,416 | agentic_rag.evaluation.runner | INFO | recall@5: 0.4036
+2026-01-04 18:39:20,416 | agentic_rag.evaluation.runner | INFO | recall@10: 0.5189
+2026-01-04 18:39:20,416 | agentic_rag.evaluation.runner | INFO | recall@20: 0.5833
+2026-01-04 18:39:20,416 | agentic_rag.evaluation.runner | INFO | mrr: 0.3248
