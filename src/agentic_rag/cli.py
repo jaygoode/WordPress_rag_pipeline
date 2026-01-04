@@ -7,7 +7,7 @@ import typer
 
 from agentic_rag.evaluation.runner import QrelsEvaluator
 from agentic_rag.evaluation.metrics import MetricSuite, RecallAtK, MRR
-from agentic_rag.retrieval.base import BaseRetriever
+from agentic_rag.retrieval.base import BaseReranker, BaseRetriever
 
 from .agent import BaseAgentController
 from .data import BaseIngestionPipeline
@@ -105,6 +105,7 @@ def evaluate() -> None:
             "top_k": settings.vector_store.top_k,
             "recall_at_k": settings.evaluation.recall_at_k,
             "embedding_model": settings.vector_store.embedding_model,
+            "cross_encoder_model": settings.vector_store.cross_encoder_model,
             "dataset": settings.dataset.name,
             "data_dir": str(settings.raw_data_dir)
         }
@@ -114,12 +115,19 @@ def evaluate() -> None:
         logger.debug("Instantiating retriever")
         retriever = _instantiate(settings.retriever_class, BaseRetriever)
         
-        # TODO: init reranker?
-        
+        # Initialize reranker if configured
+        reranker = None
+        if settings.vector_store.cross_encoder_model and settings.vector_store.cross_encoder_model != "null":
+            logger.info(f"Initializing reranker with model: {settings.vector_store.cross_encoder_model}")
+            reranker = _instantiate(settings.reranker_class, BaseReranker)
+        else:
+            logger.info("No reranker configured - using retrieval only")
+            
         logger.debug(
             "Building metric suite",
             extra={"recall_k_values": settings.evaluation.recall_at_k}
         )
+        
         metrics = MetricSuite(
             metrics=[
                 *[RecallAtK(k) for k in settings.evaluation.recall_at_k],
@@ -135,6 +143,7 @@ def evaluate() -> None:
         evaluator = QrelsEvaluator(
             retriever=retriever,
             metrics=metrics,
+            reranker=reranker,
             data_dir=settings.raw_data_dir,  # TODO: temp using raw data dir
         )
         

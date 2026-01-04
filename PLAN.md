@@ -79,4 +79,8 @@ TOMORROW:
     -hook up the reranker - in progress
     -create the agent if time
 
+RERANKERS:
+    Cross-Encoder Reranker (Recommended)
+    Fixed Embedding Reranker (Less Useful)
+    Hybrid Reranker (Best for Production)
 

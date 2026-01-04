@@ -15,6 +15,14 @@ class VectorStoreConfig(BaseModel):
     embedding_model: Optional[str] = Field(default="all-MiniLM-L6-v2")
     cross_encoder_model: Optional[str] = Field(default=None)
     top_k: int = Field(default=5)
+    retrieval_k: int = Field(
+        default=100,
+        description="Number of candidates to retrieve before reranking"
+    )
+    reranker_top_k: int = Field(
+        default=10,
+        description="Number of results to return after reranking"
+    )
 
 
 class EvaluationConfig(BaseModel):
