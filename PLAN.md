@@ -51,9 +51,6 @@ Normalization: You might normalize vectors to unit length if your similarity met
 check: 
 
     nice to haves in future:
-        -env vars
-        -AGENTIC_RAG_INGESTION_CLASS=agentic_rag.data.rag_pipeline.WordPressIngestionPipeline
-        -AGENTIC_RAG_AGENT_CONTROLLER_CLASS=agentic_rag.agent.agent.AgentController
         -chunking strategies
         -embedding choices
         -check iter_queries in runner.py, should it be implemented in a real way?
@@ -66,7 +63,6 @@ check:
             -baseline b4 finetune -> really good training data, then finetune, then measure, ...'
 
     check before hand in:
-        -how is metadata created for the chunks?
         -search top k, rerank for top 5 , give answer
         -precision@k recall@k retrieval accuracy %
         -logging, tracking metrics - for prompts, rag, agents, overall system.
@@ -102,4 +98,29 @@ MTEB (Massive Text Embedding Benchmark)
 study topics
     What are TREC, MTEB, BEIR, MS MARCO?
 
+IMPROVEMENTS
+    -test environment auto overwrites db 
+    -prompt to llm splits to multiple prompts for improved accuracy
+    -Fine-tune embeddings for dataset
+    -Normalize embeddings
+        -Make sure all vectors are normalized to unit length if using cosine similarity (embedding / ||embedding||).
+        -This prevents scale differences from reducing similarity scores.
+    -Consider hybrid retrieval
+        -Combine BM25 (keyword) + vector embeddings.
+        -Sometimes exact keyword matches catch what embeddings miss, especially for technical Q&A like WordPress.
 
+metrics
+    pretrained SentenceTransformer: all-MiniLM-L6-v2
+        -no reranker
+        recall@5: 0.3579
+        recall@10: 0.3579
+        mrr: 0.2779
+
+
+TOMORROW:
+    -for some reason the recall@k is called twice with different K but only first one runs.
+    -add logging
+    -write README
+    -write improvements
+    -hook up the reranker
+    -create the agent if time

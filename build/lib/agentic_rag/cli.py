@@ -1,7 +1,10 @@
 from __future__ import annotations
+
 from pathlib import Path
 from typing import Optional, Type
+
 import typer
+
 from .agent import BaseAgentController
 from .data import BaseIngestionPipeline
 from .evaluation import BaseEvaluator

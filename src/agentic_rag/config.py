@@ -16,6 +16,8 @@ LLM_MODEL = os.getenv("LLM_MODEL", "=LLaMA-2-13B-chat")
 
 # === Chunking / Retrieval ===
 TOP_K = os.getenv("TOP_K", 5)
+RECALL_K_TOP_K_1 = os.getenv("RECALL@K_TOP_K_1", 5)
+RECALL_K_TOP_K_2 = os.getenv("RECALL@K_TOP_K_2", 5)
 CHUNK_MAX_TOKENS = os.getenv("CHUNK_MAX_TOKENS", 150)
 CHUNK_OVERLAP = os.getenv("CHUNK_OVERLAP", 20)
 BATCH_SIZE = os.getenv("BATCH_SIZE", 32)

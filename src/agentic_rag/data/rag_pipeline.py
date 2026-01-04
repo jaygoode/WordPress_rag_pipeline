@@ -38,7 +38,7 @@ class WordPressIngestionPipeline(BaseIngestionPipeline):
                     chunk_id=f"{record.identifier}_{i}",
                     record_id=record.identifier,
                     text=chunk_text_str,
-                    metadata={"chunk_index": i},
+                    metadata={"original_id": record.identifier, "chunk_index": i}, #make sure this original id addition doesnt break anything
                 )
 
     def persist(self, chunks: List[Chunk], output_dir: Path) -> None:
@@ -74,7 +74,7 @@ class WordPressIngestionPipeline(BaseIngestionPipeline):
                     c.chunk_id,
                     c.record_id,
                     c.text,
-                    embedding,                  # pgvector handles this
+                    embedding,                
                     json.dumps(c.metadata),
                     c.created_at or now,
                 )
@@ -82,14 +82,13 @@ class WordPressIngestionPipeline(BaseIngestionPipeline):
             ]
 
             with conn.cursor() as cur:
-                # executemany is fine for batch inserts
                 cur.executemany(sql_query, rows)
             conn.commit()
 
         # write batch to JSONL for inspection
         output_dir.mkdir(parents=True, exist_ok=True)
         out_path = output_dir / "chunks.jsonl"
-        with out_path.open("a", encoding="utf-8") as f:  # append mode
+        with out_path.open("a", encoding="utf-8") as f: 
             for c in chunks:
                 f.write(json.dumps({
                     "chunk_id": c.chunk_id,

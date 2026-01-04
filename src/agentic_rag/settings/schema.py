@@ -43,6 +43,8 @@ class AppSettings(BaseSettings):
     ingestion_class: Optional[str] = None
     agent_controller_class: Optional[str] = None
     evaluator_class: Optional[str] = None
+    retriever_class: Optional[str] = None
+    reranker_class: Optional[str] = None
 
 
 _settings: Optional[AppSettings] = None

@@ -22,6 +22,7 @@ src/agentic_rag/logging_utils/__init__.py
 src/agentic_rag/logging_utils/setup.py
 src/agentic_rag/retrieval/__init__.py
 src/agentic_rag/retrieval/base.py
+src/agentic_rag/retrieval/reranker.py
 src/agentic_rag/retrieval/retriever.py
 src/agentic_rag/retrieval/schemas.py
 src/agentic_rag/settings/__init__.py

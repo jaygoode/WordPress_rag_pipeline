@@ -7,6 +7,7 @@ from collections import defaultdict
 from pathlib import Path
 from .metrics import MetricSuite
 from ..utils.io import read_jsonl
+from agentic_rag import config
 
 
 class BaseEvaluator(abc.ABC):
@@ -50,11 +51,12 @@ class QrelsEvaluator(BaseEvaluator):
         all_scores = defaultdict(list)
 
         for query in self.iter_queries(): 
-            retrieved: list[RetrievedChunk] = self.retriever.search(query, k=5) #TODO make k configurable
+            retrieved: list[RetrievedChunk] = self.retriever.search(query, k=config.TOP_K) 
 
             query_id = query.metadata.get("query_id") if query.metadata else None
             relevant = self.qrels.get(query_id, set())
             #TODO
+
             scores = self.metrics.evaluate(
                 query=query,
                 retrieved=retrieved,
@@ -67,3 +69,4 @@ class QrelsEvaluator(BaseEvaluator):
         for name, values in all_scores.items():
             mean = sum(values) / len(values) if values else 0.0
             print(f"{name}: {mean:.4f}")
+            

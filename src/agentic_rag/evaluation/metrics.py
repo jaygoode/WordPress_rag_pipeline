@@ -36,7 +36,7 @@ class RecallAtK(Metric):
         if not relevant:
             return 0.0
 
-        retrieved_ids = {c.chunk_id for c in retrieved[: self.k]}
+        retrieved_ids = {c.metadata["original_id"] for c in retrieved[: self.k]}
         relevant_ids = set(relevant)
 
         return len(retrieved_ids & relevant_ids) / len(relevant_ids)
@@ -47,7 +47,7 @@ class MRR(Metric):
     def compute(self, *, query, retrieved, relevant) -> float:
         relevant_ids = set(relevant)
         for rank, chunk in enumerate(retrieved, start=1):
-            if chunk.chunk_id in relevant_ids:
+            if chunk.metadata["original_id"] in relevant_ids:
                 return 1.0 / rank
         return 0.0
     

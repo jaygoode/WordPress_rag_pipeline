@@ -15,24 +15,28 @@ class PgVectorRetriever(BaseRetriever):
 
         # Step 2: Query the database
         sql = """
-        SELECT chunk_id, content, metadata,
-               embedding <-> %s AS score
-        FROM documents
-        ORDER BY score
-        LIMIT %s;
-        """
+            SELECT
+                chunk_id,
+                content,
+                metadata,
+                embedding <-> %s::vector AS score
+            FROM documents
+            ORDER BY score
+            LIMIT %s;
+            """
 
         with get_connection() as conn, conn.cursor() as cur:
             cur.execute(sql, (query_vector, k))
             rows = cur.fetchall()
 
+        # print("search rows:", rows)
         # Step 3: Return as RetrievedChunk
         results = [
             RetrievedChunk(
                 chunk_id=row[0],
                 text=row[1],
                 score=row[3],
-                metadata=json.loads(row[2]) if row[2] else None,
+                metadata=row[2]
             )
             for row in rows
         ]

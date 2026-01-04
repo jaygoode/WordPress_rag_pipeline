@@ -5,12 +5,18 @@ from typing import Optional, Type
 
 import typer
 
+from agentic_rag.evaluation.runner import QrelsEvaluator
+from agentic_rag.evaluation.metrics import MetricSuite, RecallAtK, MRR
+from agentic_rag.retrieval.base import BaseRetriever
+
 from .agent import BaseAgentController
 from .data import BaseIngestionPipeline
 from .evaluation import BaseEvaluator
 from .logging_utils import configure_logging
 from .settings import get_settings
 from .utils import resolve_dotted_path
+from agentic_rag import config
+
 
 app = typer.Typer(help="Agentic RAG challenge CLI") 
 
@@ -50,7 +56,25 @@ def agent() -> None:
 
 @app.command()
 def evaluate() -> None:
-    evaluator = _instantiate(get_settings().evaluator_class, BaseEvaluator)
+    settings = get_settings()
+
+    retriever = _instantiate(settings.retriever_class, BaseRetriever)
+    #TODO init reranker?
+    
+    #TODO check this metric func
+    metrics = MetricSuite(
+    metrics=[
+        RecallAtK(k=config.RECALL_K_TOP_K_1),
+        RecallAtK(k=config.RECALL_K_TOP_K_2),
+        MRR(),
+    ])
+    
+
+    evaluator = QrelsEvaluator(
+        retriever=retriever,
+        metrics=metrics,
+        data_dir=settings.raw_data_dir, #TODO temp using raw data dir
+    )
     evaluator.evaluate()
 
 
