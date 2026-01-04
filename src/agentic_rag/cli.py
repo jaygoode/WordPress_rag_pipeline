@@ -37,6 +37,7 @@ def main(_: Optional[bool] = typer.Option(None, "--version", callback=lambda v: 
     configure_logging()
 
 
+
 @app.command()
 def ingest(
     raw_dir: Optional[Path] = typer.Option(None, help="Override raw dataset directory"),
@@ -55,16 +56,18 @@ def agent() -> None:
 
 @app.command()
 def evaluate() -> None:
-    settings = get_settings()
 
+    settings = get_settings()
+    print(settings.vector_store.top_k)          # 30
+    print(settings.evaluation.recall_at_k)      # [5, 10, 20]
+    print(settings.telemetry.enabled)           # True
     retriever = _instantiate(settings.retriever_class, BaseRetriever)
     #TODO init reranker?
     
     #TODO check this metric func
     metrics = MetricSuite(
     metrics=[
-        (RecallAtK(k) for k in settings.evaluation.recall_at_k),
-        RecallAtK(k=settings.evaluation.recall_at_k+10),
+        *[RecallAtK(k) for k in settings.evaluation.recall_at_k],
         MRR(),
     ])
     
@@ -78,4 +81,5 @@ def evaluate() -> None:
 
 
 if __name__ == "__main__":  # pragma: no cover
+
     app()

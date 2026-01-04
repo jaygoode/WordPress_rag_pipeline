@@ -1,13 +1,16 @@
 from typing import List
 import torch
 from sentence_transformers import SentenceTransformer
+from ..settings import get_settings
+
+settings = get_settings()
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 if DEVICE != "cuda":
     print("Warning: CUDA not available, using CPU for embeddings. This may be slow.")
 
-model = SentenceTransformer(config.EMBEDDING_MODEL, device=DEVICE)
+model = SentenceTransformer(settings.vector_store.embedding_model, device=DEVICE)
 
 def embed_batch(texts: List[str]) -> List[List[float]]:
     """

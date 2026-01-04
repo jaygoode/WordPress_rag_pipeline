@@ -119,7 +119,6 @@ metrics
 
 
 TOMORROW:
-    -for some reason the recall@k is called twice with different K but only first one runs.
     -add logging
     -write README
     -write improvements

@@ -51,7 +51,7 @@ class QrelsEvaluator(BaseEvaluator):
         all_scores = defaultdict(list)
 
         for query in self.iter_queries(): 
-            retrieved_chunks: list[RetrievedChunk] = self.retriever.search(query, k=settings.evaluation.max_k) 
+            retrieved_chunks: list[RetrievedChunk] = self.retriever.search(query, k=settings.vector_store.top_k) 
 
             query_id = query.metadata.get("query_id") if query.metadata else None
             relevant_qrels = self.qrels.get(query_id, set())
