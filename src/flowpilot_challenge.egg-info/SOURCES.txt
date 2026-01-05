@@ -2,7 +2,6 @@ README.md
 pyproject.toml
 src/agentic_rag/__init__.py
 src/agentic_rag/cli.py
-src/agentic_rag/config.py
 src/agentic_rag/agent/__init__.py
 src/agentic_rag/agent/agent.py
 src/agentic_rag/agent/controller.py
@@ -38,4 +37,12 @@ src/flowpilot_challenge.egg-info/entry_points.txt
 src/flowpilot_challenge.egg-info/requires.txt
 src/flowpilot_challenge.egg-info/top_level.txt
 tests/test_agent.py
+tests/test_chunk_text.py
+tests/test_chunk_text_behaviour.py
+tests/test_db.py
 tests/test_ingest.py
+tests/test_metrics.py
+tests/test_reranker.py
+tests/test_retriever.py
+tests/test_runner.py
+tests/test_storage.py

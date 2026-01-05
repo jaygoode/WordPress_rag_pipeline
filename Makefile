@@ -1,57 +1,96 @@
-PYTHON ?= python3
-VENV ?= .venv
+# 
+# -------------------------------------------------------------------
+# Shell & platform
+# -------------------------------------------------------------------
+SHELL := /usr/bin/bash
+
+# -------------------------------------------------------------------
+# Python / venv configuration
+# -------------------------------------------------------------------
+VENV := .venv
+
 ifeq ($(OS),Windows_NT)
-    ACTIVATE = .venv/Scripts/activate
+	PYTHON := $(VENV)/Scripts/python.exe
+	PIP := $(VENV)/Scripts/pip.exe
+	AGENTIC := $(VENV)/Scripts/agentic-rag.exe
+	PYTEST := $(VENV)/Scripts/pytest.exe
 else
-    ACTIVATE = source .venv/bin/activate
+	PYTHON := $(VENV)/bin/python
+	PIP := $(VENV)/bin/pip
+	AGENTIC := $(VENV)/bin/agentic-rag
+	PYTEST := $(VENV)/bin/pytest
 endif
+
+# -------------------------------------------------------------------
+# Project paths
+# -------------------------------------------------------------------
 DATA_DIR ?= data/raw
 PROCESSED_DIR ?= data/processed
 
+# -------------------------------------------------------------------
+# Phony targets
+# -------------------------------------------------------------------
 .PHONY: help venv install data ingest agent eval test clean compose-up compose-down
 
+# -------------------------------------------------------------------
+# Help
+# -------------------------------------------------------------------
 help:
 	@echo "Available targets:"
-	@echo "  make venv        # create virtualenv"
-	@echo "  make install     # install deps"
-	@echo "  make data        # download dataset into $(DATA_DIR)"
-	@echo "  make ingest      # run ingestion pipeline"
-	@echo "  make agent       # launch your agent controller"
-	@echo "  make eval        # run retrieval/agent evals"
-	@echo "  make test        # run pytest"
-	@echo "  make compose-up  # start optional pgvector stack"
-	@echo "  make compose-down# stop optional pgvector stack"
+	@echo "  make venv         Create virtualenv"
+	@echo "  make install      Install dependencies"
+	@echo "  make data         Download dataset into $(DATA_DIR)"
+	@echo "  make ingest       Run ingestion pipeline"
+	@echo "  make agent        Launch agent controller"
+	@echo "  make eval         Run retrieval/agent evaluations"
+	@echo "  make test         Run pytest"
+	@echo "  make compose-up   Start pgvector stack"
+	@echo "  make compose-down Stop pgvector stack"
+	@echo "  make clean        Remove venv and generated data"
 
+# -------------------------------------------------------------------
+# Virtual environment
+# -------------------------------------------------------------------
 venv:
-	@if [ ! -d $(VENV) ]; then $(PYTHON) -m venv $(VENV); fi
+	@if [ ! -d "$(VENV)" ]; then python -m venv "$(VENV)"; fi
 
+# -------------------------------------------------------------------
+# Install dependencies
+# -------------------------------------------------------------------
 install: venv
-	$(ACTIVATE) && pip install -U pip
-	$(ACTIVATE) && pip install -r requirements.txt
+	$(PYTHON) -m pip install -U pip
+	$(PIP) install -r requirements.txt
 
+# -------------------------------------------------------------------
+# Data / pipelines
+# -------------------------------------------------------------------
 data: install
-	$(ACTIVATE) && $(PYTHON) scripts/download_dataset.py --output $(DATA_DIR)
+	$(PYTHON) scripts/download_dataset.py --output "$(DATA_DIR)"
 
 ingest: install
-	$(ACTIVATE) && agentic-rag ingest --raw-dir $(DATA_DIR) --output-dir $(PROCESSED_DIR)
+	$(AGENTIC) ingest --raw-dir "$(DATA_DIR)" --output-dir "$(PROCESSED_DIR)"
 
 agent: install
-	$(ACTIVATE) && agentic-rag agent
-
-_eval_cmd = $(ACTIVATE) && agentic-rag evaluate
+	$(AGENTIC) agent
 
 eval: install
-	$(_eval_cmd)
+	$(AGENTIC) evaluate
 
 test: install
-	$(ACTIVATE) && pytest -q
+	$(PYTEST) -q
 
+# -------------------------------------------------------------------
+# Docker
+# -------------------------------------------------------------------
 compose-up:
 	docker compose up -d vectorstore
 
 compose-down:
 	docker compose down
 
+# -------------------------------------------------------------------
+# Cleanup
+# -------------------------------------------------------------------
 clean:
-	rm -rf $(VENV) $(DATA_DIR) $(PROCESSED_DIR)
-	find . -name '__pycache__' -type d -prune -exec rm -rf {} +
+	rm -rf "$(VENV)" "$(DATA_DIR)" "$(PROCESSED_DIR)"
+	find . -name "__pycache__" -type d -prune -exec rm -rf {} +
